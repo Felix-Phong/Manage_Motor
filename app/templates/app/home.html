@@ -1,0 +1,180 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block main-content %}
+  <!-- hero section -->
+<div class="hero">
+    <div class="slider">
+        <div class="container">
+            {% for product in best_selling_products %}
+                <!-- slide item -->
+                {% if forloop.counter <= 3 %}
+                <div class="slide active">
+                    <div class="info">
+                        <div class="info-content">
+                            <h3 class="top-down">{{ product.name }}</h3>
+                            <h2 class="top-down trans-delay-0-2">{{ product.name }}</h2>
+                            <p class="top-down trans-delay-0-4">{{ product.small_description }}</p>
+                            <div class="top-down trans-delay-0-6">
+                                <a href="{% url 'product_detail' product.slug %}">
+                                    <button class="btn-flat btn-hover">
+                                        <span>Mua ngay</span>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="img right-left">
+                        <img src="{{product.ImageURL}}" alt="">
+                    </div>
+                </div>
+                <!-- end slide item -->
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!-- slider controller -->
+        <button class="slide-controll slide-next">
+            <i class='bx bxs-chevron-right'></i>
+        </button>
+        <button class="slide-controll slide-prev">
+            <i class='bx bxs-chevron-left'></i>
+        </button>
+        <!-- end slider controller -->
+    </div>
+</div>
+<!-- end hero section -->
+
+    <!-- promotion section -->
+    <div class="promotion">
+        <div class="row">
+            {% for product in latest_products %}
+                <div class="col-4 col-md-12 col-sm-12">
+                    <div class="promotion-box">
+                        <div class="text">
+                            <h3>{{ product.name }}</h3>
+                            <a href="{% url 'product_detail' product.slug %}">
+                                <button class="btn-flat btn-hover"><span>Xem chi tiết</span></button>
+                            </a>
+                        </div>
+                        <img src="{{product.ImageURL}}" alt="">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- end promotion section -->
+ 
+     <!-- product list -->
+     <div class="section">
+         <div class="container">
+             <div class="section-header">
+                 <h2>Các loại xe mẫu mới</h2>
+             </div>
+             <div class="row" id="latest-products">
+                 {% for product in latest_products %}
+                 <div class="col-3 col-md-6 col-sm-12">
+                     <div class="product-card">
+                         <div class="product-card-img">
+                             <img class = "fixed-size-img " src="{{product.ImageURL}}" alt="">
+                             <img class = "fixed-size-img " src="{{product.ImageURL}}" alt="">
+                         </div>
+                         <div class="product-card-info">
+                             <div class="product-btn">
+                                 <a href="{% url 'product_detail' product.slug %}">
+                                     <button class="btn-flat btn-hover btn-shop-now">Mua ngay</button>
+                                 </a>
+                                 <button data-product = {{product.id}} data-action = "add" class="btn-flat btn-hover btn-cart-add update-cart">
+                                     <i class='bx bxs-cart-add'></i>
+                                 </button>
+                             </div>
+                             <div class="product-card-name">
+                                 {{ product.name }}
+                             </div>
+                             <div class="product-card-price">
+                                 <span><del>${{ product.original_price }}</del></span>
+                                 <span class="curr-price">${{ product.selling_price }}</span>
+                             </div>
+                         </div>
+                     </div>  
+                 </div>
+                 {% endfor %}
+             </div>
+             <div class="section-footer">
+                 <a href="{% url 'products' %}" class="btn-flat btn-hover">Xem tất cả</a>
+             </div>
+         </div>
+     </div>
+     <!-- end product list -->
+ 
+     <!-- special product -->
+     <div class="bg-second">
+         <div class="section container">
+             <div class="row">
+                 {% for product in best_selling_products|slice:":1" %}
+                 <div class="col-4 col-md-4">
+                     <div class="sp-item-img">
+                         <img src="{{product.ImageURL}}" alt="">
+                     </div>
+                 </div>
+                 <div class="col-7 col-md-8">
+                     <div class="sp-item-info">
+                         <div class="sp-item-name">{{ product.name }}</div>
+                         <p class="sp-item-description">
+                             {{ product.small_description }}
+                         </p>
+                         <a href="{% url 'product_detail' product.slug %}">
+                             <button class="btn-flat btn-hover">Xem chi tiết</button>
+                         </a>
+                     </div>
+                 </div>
+                 {% endfor %}
+             </div>
+         </div>
+     </div>
+     <!-- end special product -->
+ 
+     <!-- product list -->
+     <div class="section">
+         <div class="container">
+             <div class="section-header">
+                 <h2>Xe bán chạy nhất</h2>
+             </div>
+             <div class="row" id="best-products">
+                 {% for product in best_selling_products %}
+                 <div class="col-3 col-md-6 col-sm-12">
+                     <div class="product-card">
+                         <div class="product-card-img">
+                             <img class = "fixed-size-img " src="{{product.ImageURL}}" alt="">
+                             <img class = "fixed-size-img "src="{{product.ImageURL}}" alt="">
+                         </div>
+                         <div class="product-card-info">
+                             <div class="product-btn">
+                                 <a href="{% url 'product_detail' product.slug %}">
+                                     <button class="btn-flat btn-hover btn-shop-now">Mua ngay</button>
+                                 </a>
+                                 <button data-product = {{product.id}} data-action = "add" class="btn-flat btn-hover btn-cart-add update-cart">
+                                     <i class='bx bxs-cart-add'></i>
+                                 </button>
+                                 <button class="btn-flat btn-hover btn-cart-add">
+                                     <i class='bx bxs-heart'></i>
+                                 </button>
+                             </div>
+                             <div class="product-card-name">
+                                 {{ product.name }}
+                             </div>
+                             <div class="product-card-price">
+                                 <span><del>${{ product.original_price }}</del></span>
+                                 <span class="curr-price">${{ product.selling_price }}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 {% endfor %}
+             </div>
+             <div class="section-footer">
+                 <a href="{% url 'products' %}" class="btn-flat btn-hover">Xem tất cả</a>
+             </div>
+         </div>
+     </div>
+     <!-- end product list -->
+ 
+{% endblock main-content %}

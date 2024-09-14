@@ -1,0 +1,41 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block login %}
+<div class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h1 style="color:white;">Đăng nhập</h1>
+                    </div>
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <form action="{% url 'login' %}" method="POST"> 
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <b><label for="exampleInputEmail1" class="form-label">Tên đăng nhập</label></b>
+                                <input type="text" name="username" class="form-control" id="exampleInputEmail1" placeholder="Nhập Email">
+                                {{form.username}}
+                            </div>
+                            <div class="mb-3">
+                                <b><label for="exampleInputPassword1" class="form-label">Mật khẩu</label></b>
+                                <input type="password" name="password" class="form-control"  placeholder="Nhập mật khẩu">
+                                {{form.password}}
+                            </div>              
+                            <button type="submit" name="login_btn" class="btn btn-primary">Đăng nhập</button>
+                            <p class="text-center h6 fw-bold mb-5 mx-1 mx-md-4 mt4">Bạn chưa có tài khoản? <a style="color:blue" href = {% url 'register' %}>Đăng ký</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% endblock login %}

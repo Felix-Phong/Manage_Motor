@@ -1,0 +1,61 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block register %}
+<div class="py-5">
+    <div class="container">
+     <div class="row justify-content-center">
+         <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary">
+                  <h1 style="color:white ; ">Đăng ký</h1>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'register' %}" method="POST" id="register-account">
+                        {% csrf_token %}
+                        {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                        <div class="mb-3">
+                            <b><label class="form-label">Tên đăng nhập:</label></b>
+                            {% comment %} <input type="text" required name="name" class="form-control" placeholder="Nhập họ tên của bạn" > {% endcomment %}
+                            {{form.username}}
+                        </div>
+                        <div class="mb-3">
+                            <b><label for="exampleInputEmail1" class="form-label">Email:</label></b>
+                            {% comment %} <input type="email" required name="email" class="form-control" id="InputEmail" aria-describedby="emailHelp"  placeholder="Nhập Email của bạn"> {% endcomment %}
+                            {{form.email}}
+                        </div>
+                        <div class="mb-3">
+                            <b><label for="exampleInputEmail1" class="form-label">Tên:</label></b>
+                            {% comment %} <input type="number" required name="phone" class="form-control"  placeholder="Nhập số điện thoại của bạn"> {% endcomment %}
+                            {{form.first_name}}
+                        </div>
+                        <div class="mb-3">
+                            <b><label for="exampleInputEmail1" class="form-label">Họ:</label></b>
+                            {% comment %} <input type="number" required name="phone" class="form-control"  placeholder="Nhập số điện thoại của bạn"> {% endcomment %}
+                            {{form.last_name}}
+                        </div>
+                        <div class="mb-3">
+                            <b><label for="exampleInputPassword1" class="form-label">Mật khẩu</label></b>
+                            {% comment %} <input type="password" required name="password" id="InputPassword1" class="form-control"  placeholder="Nhập mật khẩu"> {% endcomment %}
+                            {{form.password1}}
+                        </div>
+                        <div class="mb-3">
+                            <b><label for="exampleInputPassword1" class="form-label">Xác nhận mật khẩu</label></b>
+                            {% comment %} <input type="password" required name="cpassword" id="InputPassword2" class="form-control"  placeholder="Xác nhận mật khẩu"> {% endcomment %}
+                            {{form.password2}}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Đăng Ký</button>
+                        <p class="text-center h6 fw-bold mb-5 mx-1 mx-md-4 mt4">Bạn đã có tài khoản? <a style="color:blue" href = {% url 'login' %}>Đăng nhập</a></p>
+                    </form>
+                </div>
+            </div>
+         </div>
+     </div>
+    </div> 
+</div>
+{% endblock register %}

@@ -1,0 +1,155 @@
+{%  extends "app/base.html" %}
+{% load static %}
+{% block product-detail %}
+<!-- product-detail content -->
+<div class="bg-main">
+    <div class="container">
+        <div class="box">
+            <div class="breadcumb">
+                <a href="{% url 'home' %}">Trang chủ</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="{% url 'products' %}">Tất cả sản phẩm</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="#">{{ product.name }}</a>
+            </div>
+        </div>
+
+        <div class="row product-row">
+            <div class="col-5 col-md-12">
+                <div class="product-img" id="product-img">
+                    <img src="{% static 'images/' %}{{ product.image }}" alt="{{ product.name }}">
+                </div>
+                <div class="box">
+                    <div class="product-img-list">
+                        <div class="product-img-item">
+                            <img src="{% static 'images/' %}{{ product.image }}" alt="{{ product.name }}">
+                        </div>
+                        <div class="product-img-item">
+                            <img src="{% static 'images/' %}{{ product.image }}" alt="{{ product.name }}">
+                        </div>
+                        <div class="product-img-item">
+                            <img src="{% static 'images/' %}{{ product.image }}" alt="{{ product.name }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7 col-md-12">
+                <div class="product-info">
+                    <h1>{{ product.name }}</h1>
+                    <div class="product-info-detail">
+                        <span class="product-info-detail-title">Danh mục:</span>
+                        <a>{{ category.name }}</a>
+                    </div>
+                    <div class="product-info-detail">
+                        <span class="product-info-detail-title">Còn:</span>
+                        <a>{{ product.qty }}</a>
+                        <span class="product-info-detail-title"> Sản phẩm</span>
+                    </div>
+                    <div class="product-info-detail">
+                        <span class="product-info-detail-title">Đánh giá:</span>
+                        <span class="rating">
+                            {{ average_rating }}
+                            <i class='bx bxs-star'></i>
+                        </span>
+                    </div>
+                    <h3>Đặc điểm nổi bật</h3>
+                    <p class="product-description">{{ product.small_description|linebreaks }}</p>
+                    <div class="product-info-price">${{ product.selling_price }}</div>
+                    <div class="product-quantity-wrapper">
+                        <span class="product-quantity-btn" onclick="QualityChange('down')">
+                            <i class='bx bx-minus'></i>
+                        </span>
+                        <span class="product-quantity" id="quantity-show">1</span>
+                        <span class="product-quantity-btn" onclick="QualityChange('up')">
+                            <i class='bx bx-plus'></i>
+                        </span>
+                    </div>
+                    {% comment %} <form method="post" action="{% url 'order' %}"> {% endcomment %}
+                        <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <input type="hidden" name="quantity" id="quantity" value="1">
+                        <input type="hidden" name="order" value="true">
+                        {% if not request.user.is_authenticated %}
+                            <a href="{% url 'login' %}">
+                                <button type="button" class="btn-flat btn-hover">Đăng nhập để tiếp tục</button>
+                            </a>
+                        {% else %}
+                            {% comment %} {% if check_order %} {% endcomment %}
+                                <a href="{% url 'cart' %}">
+                                    <button type="button" class="btn-flat btn-hover">Mua ngay</button>
+                                </a>
+                            {% comment %} {% else %} {% endcomment %}
+                                <button class="btn-flat btn-hover">Thêm vào giỏ hàng</button>
+                            {% comment %} {% endif %} {% endcomment %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                Mô Tả
+            </div>
+            <div class="product-detail-description">
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                Đánh giá
+            </div>
+            <div>
+                {% if reviews %}
+                    {% for review in reviews %}
+                        <div class="user-rate">
+                            <div class="user-info">
+                                <div class="user-avt">
+                                    <img src="{% static 'images/avatar.jpg' %}" alt="">
+                                </div>
+                                <div class="user-name">
+                                    <span class="name">{{ review.user.name }}</span>
+                                    <span class="rating">
+                                        {% for i in review.rating %}
+                                            <i class='bx bxs-star'></i>
+                                        {% endfor %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="user-rate-content">
+                                {{ review.comment }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="user-rate-content">
+                        Chưa có lượt bình luận hoặc đánh giá nào
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end product-detail content -->
+{% endblock product-detail %}
+{% block script %}
+<script>
+    let quantity = 1;
+    const QualityShower = document.getElementById('quantity-show');
+    const QualityInput  = document.getElementById('quantity');
+    
+    function QualityChange(type){
+        if (type == 'up'){
+            quantity ++;
+        }else{
+            quantity --;
+            if (quantity == 0){
+                quantity = 1;
+            }
+        }
+        QualityShower.textContent = quantity + "";
+        QualityInput.value = quantity;
+    }
+
+</script>
+ {% endblock script %}

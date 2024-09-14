@@ -1,0 +1,103 @@
+{%  extends "app/base.html" %}
+{% load static %}
+
+ {% block style %} 
+ th,td{
+    padding: 5px;
+    text-align: center;
+}
+.input-number{
+    width: 100%;
+    font-size: 20px;
+    outline: none;
+    border: none;
+}
+.btn-buy{
+    border: none;
+    outline: none;
+    font-size: 17px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background-color: #59e1ff;
+    display: inline-block;
+}
+ 
+{% endblock style  %}
+
+{% block cart-status%}
+
+  <!-- product-detail content -->
+<div class="bg-main">
+    <div class="container">
+        <div class="box">
+            <div class="breadcumb">
+                <a href="{% url 'home' %}">Trang chủ</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="{% url 'cart' %}">Giỏ hàng của tôi</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="#">Đơn hàng</a>
+            </div>
+        </div>
+
+        <div class="box" style="padding: 0 40px">
+            <div class="product-info">
+                {% if order_details|length == 0 %}
+                    <p style="font-size: 20px; text-align: center;">
+                        Giỏ hàng của bạn trống. Mua ngay <a style="color: blue; text-decoration: underline" href="{% url 'products' %}">Tại đây</a>
+                    </p>
+                {% else %}
+                    <table width="100%" border="1" cellspacing="0">
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Thành tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Đánh giá</th>
+                        </tr>
+                        {% for product in order_details %}
+                        <tr>
+                            <td style="text-align: left;">
+                                <a href="{% url 'product_detail' product.product.slug %}">
+                                    {{ product.product.name }}
+                                </a>
+                            </td>
+                            <td>{{ product.quantity }}</td>
+                            <td>${{ product.selling_price }}</td>
+                            <td>${{ product.get_total }}</td>
+                            <td>
+                                {% if product.status == 2 %}
+                                    <div class='btn-buy' style='background-color: #f3fc8b'>Đang chuẩn bị hàng</div>
+                                {% elif product.status == 3 %}
+                                    <div class='btn-buy' style='background-color: #b4fc8b'>Đang giao hàng</div>
+                                {% else %}
+                                    <div class='btn-buy'>Đã giao</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if product.status == 4 %}
+                                    {% if product.rate %}
+                                        <a href="{% url 'vote' product.id %}">Đánh giá lại</a>
+                                    {% else %}
+                                        <a href="{% url 'vote' product.id %}">Đánh giá</a>
+                                    {% endif %}
+                                {% else %}
+                                    <a>Chờ đánh giá</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end product-detail content -->
+   
+{% endblock cart-status%}
+
+{% block script %} 
+ {% endblock script %}

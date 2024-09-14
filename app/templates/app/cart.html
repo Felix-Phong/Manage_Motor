@@ -1,0 +1,106 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block style %} 
+th,td{
+    padding: 5px;
+    text-align: center;
+}
+.input-number{
+    width: 100%;
+    font-size: 20px;
+    outline: none;
+    border: none;
+}
+.btn-buy{
+    border: none;
+    outline: none;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background-color: #59e1ff;
+}
+{% endblock style %}
+
+{% block cart-content %}
+<!-- product-detail content -->
+<div class="bg-main">
+    <div class="container">
+        <div class="box">
+            <div class="breadcumb">
+                <a href="{% url 'home' %}">Trang chủ</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="{% url 'cart' %}">Giỏ hàng của tôi</a>
+            </div>
+        </div>
+        <div class="box" style="padding: 0 40px">
+            <div class="product-info">
+                {% if order_details|length == 0 %}
+                    <p style="font-size: 20px; text-align: center;">
+                        Giỏ hàng của bạn trống. Mua ngay <a style="color: blue; text-decoration: underline" href="{% url 'products' %}">Tại đây</a>  
+                    </p>
+                {% else %} 
+                    <table width="100%" border="1" cellspacing="0">
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Tên loại xe</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                        {% for order_detail in order_details %}
+                        <tr>
+                            <td style="">
+                                <a href="{% url 'product_detail' order_detail.product.slug %}">{{ order_detail.product.name }}</a> 
+                                
+                            </td>
+                            <td>{{ order_detail.product.category }}</td>
+                            <td width=100>
+                                 <form action="#" method="post">
+                                    {% csrf_token %} 
+                                    <input type="hidden" name="order_detail_id" value="{{ order_detail.id }}">
+                                    <div class="cart-row">
+                                        <div class="quantity-input d-flex align-items-center">
+                                            <div class="col-6">
+                                                <p class="quantity">{{order_detail.quantity}}</p>
+                                            </div>
+                                            <div class="col-6 d-flex justify-content-between align-items-center">
+                                                <img data-product = {{order_detail.product.id}} data-action = 'add' class="chg-quantity update-cart" src="{% static 'images/arrow-up.png' %}">
+                                                <img data-product = {{order_detail.product.id}} data-action = 'remove' class="chg-quantity update-cart" src="{% static 'images/arrow-down.png' %}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>${{ order_detail.product.original_price }}</td>
+                            <td>$ {{ order_detail.get_total }} </td> 
+                        </tr>
+                        {% endfor %}
+                    </table>
+                        <form action="{% url 'checkout'%}" method="post">
+                        {% csrf_token %} 
+                        <input type="hidden" name="buy_order" value="true">
+                        <p style="display: block;">Tổng tiền: ${{order.get_cart_total}}</p> 
+                        <button class="btn-buy" style="float: right;">Đặt hàng</button>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </form>
+                {% endif %} 
+                <a href="{% url 'cart_status' %}">
+                    <h4>Xem giỏ hàng đã mua</h4>
+                </a>
+                <br>
+                <br>    
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end product-detail content -->
+{% endblock cart-content %}
+
