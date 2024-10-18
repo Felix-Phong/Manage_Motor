@@ -2,6 +2,10 @@
 
 This is a Django application used to manage a motor shop.
 
+## Requirement
+
+Install Python before you run this application
+
 ## How to Run
 
 1. Open the project directory in your terminal.
