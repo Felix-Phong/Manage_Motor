@@ -4,7 +4,7 @@ This is a Django application used to manage a motor shop.
 
 ## Requirement
 
-Install Python before you run this application
+Install Python before you run this application. Open this link to download Python: (https://www.python.org/downloads/)
 
 ## How to Run
 
