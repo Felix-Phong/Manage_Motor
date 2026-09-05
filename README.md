@@ -1,226 +1,306 @@
-🏍️ Manage Motor — Motorcycle E-Commerce Platform
+# 🏍️ Manage Motor — Motorcycle E-Commerce Website
 
-A web-based motorcycle e-commerce platform built with Django. The application provides customers with a complete shopping flow, including product browsing, category filtering, search, authentication, shopping cart management, checkout, order tracking, and product reviews.
+A full-stack motorcycle e-commerce web application built with **Python and Django**.
 
-The project was developed to practice building a full-stack web application using Django's MVT architecture, Django ORM, authentication system, database transactions, server-side rendering, and asynchronous cart updates with JavaScript.
+The project provides a complete online shopping flow including product browsing, search, user authentication, shopping cart, checkout, order processing, and product reviews.
 
-✨ Features
-👤 User Authentication
-User registration
-User login/logout
-Session-based authentication using Django Authentication
-User profile page
-Authentication-aware shopping cart
-🏍️ Product Catalog
-Browse motorcycle products
-Browse products by category
-Product detail page
-Product images
-Original price and selling price
-Product stock management
-Product descriptions
-Latest products section
-Best-selling products section
-🔎 Product Search
-Search products by name
-Paginated search results
-🛒 Shopping Cart
-Add products to cart
-Increase/decrease product quantity
-Automatically remove products when quantity reaches zero
-Display total cart items
-Calculate cart total
-Authentication-based cart management
+---
 
-Cart updates are handled asynchronously through a JavaScript request to the Django backend.
+## 📌 Overview
 
-📦 Checkout & Order Processing
+**Manage Motor** is a motorcycle online shopping platform developed using Django's **Model–View–Template (MVT)** architecture.
 
-The checkout process includes:
+The system allows customers to:
 
-Stock availability validation
-Order creation
-Order detail creation/update
-Product stock deduction
-Database transaction handling with transaction.atomic()
+- Browse motorcycle products by category
+- Search for motorcycles
+- View detailed product information
+- Register and authenticate accounts
+- Add products to a shopping cart
+- Update product quantities
+- Remove products from the cart
+- Checkout and create orders
+- Manage user profiles
+- Rate and review products
 
-This helps keep order creation and inventory updates consistent.
+The project was developed to practice:
 
-⭐ Product Reviews
+- Django web development
+- Database modeling
+- Django ORM
+- User authentication
+- E-commerce business logic
+- Shopping cart implementation
+- Order processing
+- Inventory management
+- Database transaction handling
 
-Customers can leave:
+---
 
-Rating
-Comment
+## ✨ Features
 
-The product detail page also calculates the average product rating.
+### 👤 User Authentication
 
-📊 Product Ranking
+- User registration
+- User login/logout
+- Django Authentication Framework
+- User profile management
+- Authentication-protected features
 
-The homepage provides:
+### 🏍️ Product Management
 
-Latest products
-Best-selling products
+- Product listing
+- Product categories
+- Product detail pages
+- Product images
+- Product descriptions
+- Original price
+- Selling price
+- Product stock management
+- Product status management
 
-Best-selling products are determined based on the number of associated order details.
+### 🔎 Product Search
 
-📄 Pagination
+Users can search for motorcycles by product name.
 
-Product listings and search results use Django's Paginator to improve navigation and page performance.
+Search results are displayed using pagination to improve usability when dealing with multiple products.
 
-🛠️ Tech Stack
-Category	Technology
-Backend	Python, Django 5.0.4
-Frontend	HTML5, CSS3, JavaScript
-UI	Bootstrap, Boxicons
-Template Engine	Django Templates
-Database	SQLite
-ORM	Django ORM
-Authentication	Django Authentication Framework
-Static Files	Django Static Files
-Image Handling	Django ImageField
-CI/CD	GitHub Actions
-🏗️ Architecture
+### 🛒 Shopping Cart
 
-The application follows Django's Model–View–Template (MVT) architecture.
+The shopping cart supports:
 
-┌─────────────────────┐
-│       Browser       │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│    Django URLs      │
-│     app/urls.py     │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│       Views         │
-│     app/views.py    │
-└──────────┬──────────┘
-           │
-      ┌────┴─────┐
-      ▼          ▼
-┌───────────┐ ┌──────────────┐
-│   Models  │ │   Templates  │
-│ models.py │ │ HTML / CSS   │
-└─────┬─────┘ │ JavaScript   │
-      │       └──────────────┘
-      ▼
-┌─────────────────────┐
-│       SQLite        │
-│     db.sqlite3      │
-└─────────────────────┘
-🗃️ Data Model
+- Add product to cart
+- Update product quantity
+- Remove product from cart
+- Calculate product quantities and prices
+- Validate available stock
 
-The main entities are:
+Cart quantity updates are handled asynchronously using JavaScript `fetch()` requests.
 
-User
- │
- ├───────────────┐
- │               │
- ▼               ▼
-Order        OrderDetail
- │               │
- │               ├──────────► Product
- │               │               │
- │               │               ▼
- │               │            Category
- │               │
- │               ├── rate
- │               └── comment
- │
- └── account
-Main Models
+### 💳 Checkout & Order Processing
+
+The checkout process:
+
+1. Validates requested product quantities.
+2. Checks available inventory.
+3. Creates or updates the customer's order.
+4. Creates order details.
+5. Updates product stock.
+6. Uses Django database transactions to maintain data consistency.
+
+The checkout logic uses:
+
+```python
+with transaction.atomic():
+```
+
+This helps ensure that related database operations are executed safely as a single transaction.
+
+### ⭐ Product Rating & Reviews
+
+Customers can rate and comment on products.
+
+The system stores:
+
+- Rating
+- Comment
+- Product
+- Customer
+- Order
+- Order detail
+
+Product pages can calculate the average rating based on customer reviews.
+
+### 📈 Product Discovery
+
+The homepage provides product discovery sections such as:
+
+- Latest products
+- Best-selling products
+
+### 📄 Pagination
+
+Product listings and search results use Django's `Paginator` to split products across multiple pages.
+
+---
+
+# 🏗️ Architecture
+
+The project follows the **Django MVT architecture**.
+
+```text
+                    ┌─────────────────────┐
+                    │       Browser       │
+                    │   HTML / CSS / JS   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │      Django URL     │
+                    │       Routing       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │        Views        │
+                    │   Business Logic    │
+                    └──────────┬──────────┘
+                               │
+                  ┌────────────┴────────────┐
+                  │                         │
+                  ▼                         ▼
+        ┌─────────────────┐       ┌─────────────────┐
+        │      Models     │       │    Templates    │
+        │   Django ORM    │       │  Django HTML    │
+        └────────┬────────┘       └─────────────────┘
+                 │
+                 ▼
+        ┌─────────────────┐
+        │    SQLite DB    │
+        └─────────────────┘
+```
+
+### Main Components
+
+| Component | Responsibility |
+|---|---|
+| URL Routing | Maps HTTP requests to views |
+| Views | Handles application and business logic |
+| Models | Defines database structure |
+| Templates | Renders HTML pages |
+| Django ORM | Handles database operations |
+| Authentication | Handles user authentication |
+| Static Files | CSS, JavaScript, images and frontend assets |
+
+---
+
+# 🗄️ Database Design
+
+The application uses Django ORM to model the main entities.
+
+```text
 Category
-
-Represents motorcycle product categories.
-
-Category
-├── name
-├── slug
-├── description
-├── image
-├── status
-└── created_at
+   │
+   │ 1
+   │
+   │ N
+   ▼
 Product
-
-Represents products available in the store.
-
-Product
-├── category
-├── name
-├── slug
-├── small_description
-├── description
-├── original_price
-├── selling_price
-├── image
-├── qty
-├── status
-└── created_at
-Order
-
-Represents a customer's shopping cart or completed order.
-
-Order
-├── account
-├── status
-└── created_at
+   │
+   │ 1
+   │
+   │ N
+   ▼
 OrderDetail
+   ▲
+   │
+   │ N
+   │
+   │ 1
+   │
+Order
+```
 
-Represents individual products inside an order.
+## Category
 
-OrderDetail
-├── account
-├── product
-├── order
-├── selling_price
-├── quantity
-├── status
-├── rate
-├── comment
-└── created_at
-🔄 Main Business Flows
-Shopping Flow
+Stores motorcycle categories.
+
+### Main Fields
+
+- `name`
+- `slug`
+- `description`
+- `image`
+- `status`
+- `created_at`
+
+## Product
+
+Stores motorcycle information.
+
+### Main Fields
+
+- `category`
+- `name`
+- `slug`
+- `small_description`
+- `description`
+- `original_price`
+- `selling_price`
+- `image`
+- `qty`
+- `status`
+- `created_at`
+
+## Order
+
+Represents a customer's shopping cart or order.
+
+### Main Fields
+
+- `account`
+- `status`
+- `created_at`
+
+## OrderDetail
+
+Stores individual products belonging to an order.
+
+### Main Fields
+
+- `account`
+- `product`
+- `order`
+- `selling_price`
+- `quantity`
+- `status`
+- `rate`
+- `comment`
+- `created_at`
+
+---
+
+# 🔄 Shopping Flow
+
+```text
+Customer
+   │
+   ▼
 Browse Products
-       │
-       ▼
-Select Product
-       │
-       ▼
-Product Detail
-       │
-       ▼
+   │
+   ▼
+View Product Details
+   │
+   ▼
 Add to Cart
-       │
-       ▼
-Update Cart Quantity
-       │
-       ▼
+   │
+   ▼
+Update Quantity
+   │
+   ▼
+Validate Stock
+   │
+   ▼
 Checkout
-       │
-       ▼
-Check Stock
-       │
-       ├──── Insufficient Stock
-       │            │
-       │            ▼
-       │       Show Error
-       │
-       ▼
+   │
+   ▼
 Create Order
-       │
-       ▼
+   │
+   ▼
 Create Order Details
-       │
-       ▼
+   │
+   ▼
 Decrease Product Stock
-       │
-       ▼
-Order Successful
-Authentication Flow
+   │
+   ▼
+Order Completed
+```
+
+---
+
+# 🔐 Authentication Flow
+
+```text
 Register
    │
    ▼
@@ -233,219 +313,387 @@ Create User
 Login
    │
    ▼
-Django Authentication
+authenticate()
+   │
+   ▼
+login()
    │
    ▼
 Authenticated Session
-📁 Project Structure
+```
+
+Logout is handled using Django's built-in authentication system.
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology | Usage |
+|---|---|
+| **Python** | Backend programming language |
+| **Django 5.0.4** | Web framework |
+| **Django ORM** | Database access |
+| **SQLite** | Development database |
+| **HTML5** | Page structure |
+| **CSS3** | Styling |
+| **JavaScript** | Client-side interactions |
+| **Bootstrap** | Responsive UI |
+| **Boxicons** | Icons |
+| **Django Templates** | Server-side rendering |
+| **Git / GitHub** | Version control |
+| **GitHub Actions** | CI / testing workflow |
+
+---
+
+# 📂 Project Structure
+
+```text
 Manage_Motor/
 │
-├── .github/
-│   └── workflows/
-│       └── django.yml
+├── app/
+│   ├── migrations/
+│   │
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── cart.html
+│   │   ├── cart_status.html
+│   │   ├── home.html
+│   │   ├── login.html
+│   │   ├── product_detail.html
+│   │   ├── products.html
+│   │   ├── register.html
+│   │   ├── search.html
+│   │   ├── user.html
+│   │   ├── user_profile.html
+│   │   └── vote.html
+│   │
+│   ├── static/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
 │
 ├── WebBanHang/
-│   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
 │   ├── asgi.py
 │   └── wsgi.py
 │
-├── app/
-│   ├── migrations/
-│   ├── templates/
-│   │   └── app/
-│   │       ├── base.html
-│   │       ├── home.html
-│   │       ├── products.html
-│   │       ├── product_detail.html
-│   │       ├── search.html
-│   │       ├── cart.html
-│   │       ├── cart_status.html
-│   │       ├── login.html
-│   │       ├── register.html
-│   │       └── user_profile.html
-│   │
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── urls.py
-│   └── views.py
-│
-├── static/
-│   ├── css/
-│   ├── images/
-│   └── js/
+├── .github/
+│   └── workflows/
 │
 ├── manage.py
 ├── db.sqlite3
 └── README.md
-🚀 Getting Started
-1. Prerequisites
+```
+
+---
+
+# 🚀 Getting Started
+
+## Prerequisites
 
 Make sure you have installed:
 
-Python 3.10+
-pip
-Git
+- Python 3.10+
+- pip
+- Git
 
-The project uses Django 5.0.4. A modern supported Python version is recommended for local development.
+---
 
-2. Clone the Repository
+## 1. Clone the Repository
+
+```bash
 git clone https://github.com/Felix-Phong/Manage_Motor.git
+```
 
+```bash
 cd Manage_Motor
-3. Create a Virtual Environment
-Windows
+```
+
+---
+
+## 2. Create a Virtual Environment
+
+### Windows
+
+```bash
 python -m venv venv
+```
 
-Activate it:
+Activate the environment:
 
-.\venv\Scripts\Activate.ps1
-macOS / Linux
+```bash
+venv\Scripts\activate
+```
+
+### macOS / Linux
+
+```bash
 python3 -m venv venv
+```
+
+```bash
 source venv/bin/activate
-4. Install Dependencies
+```
 
-If a requirements.txt file is available:
+---
 
+## 3. Install Dependencies
+
+If the project contains a `requirements.txt` file:
+
+```bash
 pip install -r requirements.txt
+```
 
-Otherwise, install Django and the required image package:
+Otherwise:
 
+```bash
 pip install django==5.0.4
 pip install Pillow
-5. Apply Database Migrations
+```
+
+---
+
+## 4. Run Database Migrations
+
+```bash
+python manage.py makemigrations
+```
+
+```bash
 python manage.py migrate
-6. Create an Admin Account
+```
+
+---
+
+## 5. Create an Administrator Account
+
+```bash
 python manage.py createsuperuser
+```
 
-Follow the prompts to create the administrator account.
+Follow the instructions shown in the terminal.
 
-7. Run the Development Server
+---
+
+## 6. Start the Development Server
+
+```bash
 python manage.py runserver
+```
 
-Open:
+The application will be available at:
 
+```text
 http://127.0.0.1:8000/
-🔐 Django Admin
+```
 
-The project uses Django's built-in admin interface.
+Django Admin:
 
-After creating a superuser, access:
-
+```text
 http://127.0.0.1:8000/admin/
+```
 
-The admin interface can be used to manage application data registered with Django Admin.
+---
 
-🔌 Main Routes
-Method	Endpoint	Description
-GET	/	Homepage
-GET	/products/	Product listing
-GET	/products/<slug>/	Products by category
-GET	/product/<slug>/	Product details
-POST	/search/	Search products
-GET	/cart/	Shopping cart
-GET	/cart_status/	Order status
-POST	/update_order/	Update cart
-POST	/checkout/	Checkout
-GET/POST	/login/	User login
-GET/POST	/register/	User registration
-GET	/logout/	User logout
-GET	/user_profile/	User profile
-💡 Technical Highlights
+# 🌐 Main Routes
 
-This project demonstrates practical experience with:
+| Route | Description |
+|---|---|
+| `/` | Homepage |
+| `/products/` | Product listing |
+| `/products/<slug>/` | Product details |
+| `/product/<slug>/` | Product details |
+| `/search/` | Search products |
+| `/cart/` | Shopping cart |
+| `/cart_status/` | Cart status |
+| `/update_order/` | Update cart/order |
+| `/checkout/` | Checkout |
+| `/login/` | User login |
+| `/register/` | User registration |
+| `/logout/` | Logout |
+| `/user_profile/` | User profile |
 
-Django MVT architecture
-Django ORM
-Relational data modeling
-Foreign key relationships
-Django Authentication
-Server-side rendering
-Form validation
-Database transactions
-Inventory management
-Shopping cart implementation
-Product search
-Pagination
-Aggregation queries
-Asynchronous JavaScript requests
-Static and media file handling
-GitHub Actions
+---
 
-One notable implementation is the checkout transaction:
+# 💡 Technical Highlights
 
+## 1. Django ORM
+
+Database operations are implemented using Django ORM.
+
+Example:
+
+```python
+Product.objects.filter(
+    name__contains=searched
+)
+```
+
+This allows users to search for products by name.
+
+---
+
+## 2. Database Transactions
+
+Checkout operations use Django's transaction management:
+
+```python
 with transaction.atomic():
-    # create order
-    # update order details
-    # decrease product stock
+```
 
-Using a database transaction helps prevent partially completed checkout operations.
+This helps maintain consistency between:
 
-🧪 Testing
+- Order creation
+- Order detail creation
+- Product inventory updates
 
-Run Django's test suite with:
+---
 
+## 3. Stock Validation
+
+Before completing an order, the system checks whether the requested quantity is available.
+
+```text
+Requested Quantity
+        │
+        ▼
+Compare with Product Stock
+        │
+   ┌────┴────┐
+   │         │
+Enough    Not Enough
+   │         │
+   ▼         ▼
+Checkout   Reject
+```
+
+---
+
+## 4. Asynchronous Cart Updates
+
+Cart quantity updates communicate with the backend using JavaScript `fetch()`.
+
+```text
+User changes quantity
+        │
+        ▼
+JavaScript fetch()
+        │
+        ▼
+/update_order/
+        │
+        ▼
+Django View
+        │
+        ▼
+Update OrderDetail
+        │
+        ▼
+Return updated status
+```
+
+This provides a smoother cart interaction without requiring a complete page reload for every quantity update.
+
+---
+
+## 5. Product Rating Aggregation
+
+Product ratings are stored in `OrderDetail` together with customer comments.
+
+The product detail page can calculate the average rating based on customer reviews.
+
+---
+
+# 🧪 Testing
+
+Django's built-in testing framework can be executed with:
+
+```bash
 python manage.py test
+```
 
-The repository also contains a GitHub Actions workflow intended to run automated tests on pushes and pull requests to the master branch.
+The project also includes a GitHub Actions workflow intended to automatically run tests when changes are pushed or pull requests are created.
 
-🔮 Future Improvements
+---
 
-Potential improvements include:
+# 🔮 Future Improvements
 
-Add requirements.txt
+Potential improvements for a production-ready version include:
 
-Add automated test coverage
+- [ ] PostgreSQL or MySQL production database
+- [ ] Django REST Framework API
+- [ ] JWT authentication
+- [ ] Payment gateway integration
+- [ ] Email order confirmation
+- [ ] Advanced product filtering
+- [ ] Product image optimization
+- [ ] Admin dashboard
+- [ ] Order status tracking
+- [ ] Automated unit and integration tests
+- [ ] Docker deployment
+- [ ] Environment variable configuration
+- [ ] Production CI/CD deployment
 
-Improve product filtering and sorting
+---
 
-Add payment gateway integration
+# 🔒 Production Considerations
 
-Add order status management for administrators
+For production deployment, the following improvements should be made:
 
-Add customer order history
+- Move `SECRET_KEY` to environment variables.
+- Set `DEBUG=False`.
+- Configure `ALLOWED_HOSTS`.
+- Use a production database instead of SQLite.
+- Configure static and media file storage.
+- Remove local virtual environment files from Git.
+- Remove Python cache files such as `__pycache__`.
+- Avoid committing the local `db.sqlite3` database.
+- Maintain dependencies in `requirements.txt`.
 
-Improve inventory validation
+---
 
-Add REST API using Django REST Framework
+# 📚 What I Learned
 
-Add environment-based configuration
+Through this project, I practiced:
 
-Move secrets to environment variables
+- Django MVT architecture
+- Django ORM
+- Relational database modeling
+- User authentication
+- CRUD operations
+- E-commerce business logic
+- Shopping cart implementation
+- Order processing
+- Inventory management
+- Database transactions
+- Search and pagination
+- Server-side rendering
+- JavaScript asynchronous requests
+- Git and GitHub workflow
 
-Use PostgreSQL for production
+---
 
-Add Docker support
+# 👨‍💻 Author
 
-Improve CI/CD pipeline
+**Hoang Quoc Phong**
 
-Add production deployment configuration
+Software Engineering / Information Technology
 
-Remove committed virtual environment and cache files
+### Interests
 
-⚠️ Development Notes
+- Backend Development
+- Node.js
+- Python / Django
+- RESTful API
+- Database Systems
+- Software Engineering
 
-This repository is primarily a learning/portfolio project and currently uses SQLite and Django development settings.
+---
 
-For production deployment, the following should be improved:
+# 📄 License
 
-Disable DEBUG
-Move SECRET_KEY to environment variables
-Configure ALLOWED_HOSTS
-Use a production database such as PostgreSQL
-Configure secure static/media file serving
-Remove local virtual environment files from Git
-Add proper dependency locking
-Configure production WSGI/ASGI deployment
-👨‍💻 Author
-
-Felix Phong
-
-GitHub: Felix-Phong
-
-📄 License
-
-This project is intended for educational and portfolio purposes.
+This project was created for learning and portfolio purposes.
